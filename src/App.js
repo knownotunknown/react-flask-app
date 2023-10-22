@@ -2,23 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
-
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(null);
+  const [file, setFile] = useState(null);
 
-  useEffect(() => {
-    fetch('/api/time').then(res => res.json()).then(data => {
-      setCurrentTime(data.time);
-    });
-  }, []);
+  const handleFileChange = async (e) => {
+    console.log('this is the file');
+    const file = e.target.files[0];
+    if (file) {
+        setFile(file);
 
-  const response = await axios.post('/api/parse', formData, {
-      headers: {
-          'Content-Type': 'multipart/form-data'
-      }
-  });
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          fetch('http://localhost:5000/api/time').then(res => res.json()).then(data => {
+            setCurrentTime(data.time);
+          });
+            // Process the extractedText and set benefits
+        } catch (error) {
+            console.error("Error uploading and parsing the file:", error);
+        }
+    }
+};
 
   return (
     <div className="App">
@@ -35,7 +42,12 @@ function App() {
                 <p>
                   Edit <code>src/App.js</code> and save to reload.
                 </p>
-
+                <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    className="uploadButton"
+                />
                 <a
                   className="App-link"
                   href="https://reactjs.org"
