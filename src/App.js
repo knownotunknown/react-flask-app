@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
 
 function App() {
   const [currentTime, setCurrentTime] = useState(0);
@@ -11,6 +13,12 @@ function App() {
       setCurrentTime(data.time);
     });
   }, []);
+
+  const response = await axios.post('/api/parse', formData, {
+      headers: {
+          'Content-Type': 'multipart/form-data'
+      }
+  });
 
   return (
     <div className="App">
@@ -27,6 +35,7 @@ function App() {
                 <p>
                   Edit <code>src/App.js</code> and save to reload.
                 </p>
+
                 <a
                   className="App-link"
                   href="https://reactjs.org"

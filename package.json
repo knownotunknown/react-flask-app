@@ -12,7 +12,7 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "start-api": "cd api && venv/Scripts/flask run --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test",
