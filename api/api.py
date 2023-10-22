@@ -1,5 +1,6 @@
 import time
 from flask import Flask
+import sem_search
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 
@@ -15,4 +16,5 @@ def index():
 
 @app.route('/api/time')
 def get_current_time():
+    sem_search("text")
     return {'time': "hi"}

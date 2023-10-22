@@ -4,28 +4,13 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(null);
-  const [file, setFile] = useState(null);
+  const [currentTime, setCurrentTime] = useState(0);
 
-  const handleFileChange = async (e) => {
-    console.log('this is the file');
-    const file = e.target.files[0];
-    if (file) {
-        setFile(file);
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-          fetch('http://localhost:5000/api/time').then(res => res.json()).then(data => {
-            setCurrentTime(data.time);
-          });
-            // Process the extractedText and set benefits
-        } catch (error) {
-            console.error("Error uploading and parsing the file:", error);
-        }
-    }
-};
+  useEffect(() => {
+    fetch('/api/time').then(res => res.json()).then(data => {
+      setCurrentTime(data.time);
+    });
+  }, []);
 
   return (
     <div className="App">
@@ -42,12 +27,6 @@ function App() {
                 <p>
                   Edit <code>src/App.js</code> and save to reload.
                 </p>
-                <input
-                    type="file"
-                    accept=".pdf"
-                    onChange={handleFileChange}
-                    className="uploadButton"
-                />
                 <a
                   className="App-link"
                   href="https://reactjs.org"
