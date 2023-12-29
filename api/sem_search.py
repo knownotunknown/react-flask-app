@@ -58,41 +58,69 @@ def sem_search(text):
 # ]
 
     employee_benefits = [
-        "comprehensive health coverage",
-        "401(k) retirement plan with company match up",
-        "unlimited paid time off",
-        "flexible work schedules with remote work options and flex hours",
-        "free on-site childcare with certified educators",
-        "continuous learning allowance annually",
-        "wellness programs including gym memberships, meditation sessions, and monthly massages",
-        "transportation subsidies and free company shuttle services",
-        "employee assistance program (eap) with access to counseling and various support resources",
-        "annual company retreats in exotic locations",
-        "free daily catered meals with diverse cuisines",
-        "employee stock purchase plan (espp) with discounted rates",
-        "paid parental leave for mothers and fathers",
-        "pet-friendly office",
-        "regular performance bonuses"
+        "You get comprehensive health coverage.",
+        "You get 401(k) retirement plan with company match up.",
+        "You get unlimited paid time off.",
+        "You get flexible work schedules with remote work options and flex hours.",
+        "You get free on-site childcare with certified educators.",
+        "You get continuous learning allowance annually.",
+        "You get wellness programs including gym memberships, meditation sessions, and monthly massages.",
+        "You get transportation subsidies and free company shuttle services.",
+        "You are provided life insurance and disability coverage.",
+        "You have access to professional development and training programs.",
+        "You get performance bonuses and stock options.",
+        "You have access to employee assistance programs for mental health support.",
+        "You get maternity and paternity leave benefits.",
+        "You have options for telecommuting and work-from-home arrangements.",
+        "You are offered tuition reimbursement for further education.",
+        "You receive discounts on company products and services.",
+        "You have access to on-site fitness centers or fitness-related reimbursements.",
+        "You get annual health checkups and health care spending accounts.",
+        "You are provided with meal allowances or free meals.",
+        "You have access to legal assistance services.",
+        "You get relocation assistance for moving for work.",
+        "You are offered pet-friendly workplaces and pet insurance.",
+        "You receive holiday bonuses and gifts.",
+        "You get employee referral bonuses.",
+        "You have access to company cars or transportation benefits.",
+        "You receive anniversary rewards for years of service.",
+        "You get regular team-building events and company retreats.",
+        "You have access to on-site wellness facilities like massage therapy.",
+        "You are provided with technology stipends for personal devices.",
+        "You receive subsidized memberships for clubs or associations.",
+        "You get early access to new products or services.",
+        "You are eligible for sabbatical leave after a certain period.",
+        "You have access to employee recognition and rewards programs.",
+        "You get regular career progression and promotion opportunities.",
+        "You receive special offers and benefits from partner companies.",
+        "You have access to on-site amenities like cafes and lounges.",
+        "You get childcare and eldercare assistance benefits.",
+        "You are offered custom career planning and mentorship programs.",
+        "You get environmentally friendly workplace initiatives.",
+        "You receive emergency fund assistance for unforeseen circumstances."
     ]
 
 
-    thresh = 0.2 # arbitrary for rn
+    sentences = {}
+    thresh = 0.575 # arbitrary for rn
     for query in employee_benefits:
         query_embedding = embedder.encode(query, convert_to_tensor=True)
 
         cos_scores = util.cos_sim(query_embedding, corpus_embeddings)[0]
         matching_sentences = [(corpus[idx], score) for idx, score in enumerate(cos_scores) if score > thresh]
-
-        sentences = []
+        
 
         print("\n\n======================\n\n")
         print("Query:", query)
         if matching_sentences:
-            print("\nSentences in corpus with cosine similarity over 0.65:")
+            print("\nSentences in corpus with cosine similarity over {}:".format(thresh))
+            answers = []
             for sentence, score in matching_sentences:
                 print(sentence, "(Score: {:.4f})".format(score))
-            sentences.append(matching_sentences)
+                answers.append(sentence)
+            sentences[query] = answers
+            #sentences.append(matching_sentences)
         else:
-            print("\nNo sentences found with cosine similarity over 0.65.")
-            
+            print("\nNo sentences found with cosine similarity over {}.".format(thresh))
+    print(len(sentences.keys()))
     return sentences

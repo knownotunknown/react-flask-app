@@ -3,7 +3,7 @@
     border: 1px solid #ccc;
     padding: 20px; /* Increased padding for more space inside */
     font-family: Arial, sans-serif;
-    position: fixed;
+    position: absolute;
     top: 40px;
     right: 25px;
     display: flex;
